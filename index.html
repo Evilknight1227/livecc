@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CC app</title>
+    <style>
+        *{font-size: 50px;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;}
+        h1{background-color: black;color: whitesmoke;width: 50%;border-radius: 40px;}
+        h2{background-color: black;color: whitesmoke;width: 50%;border-radius: 40px;}
+        body{background-color: linen;}
+    </style>
+</head>
+<body>
+    <center>
+        <h1>Live Currency Converter</h1>
+        <form onsubmit="convert()">
+            <input type="text" step="any" placeholder="Enter Amt In $" id="amt"/>
+            </br><br/>
+            <input type="submit" value="Convert to ₹"/>
+        </form>
+        <h2 id="msg"/>
+
+        <script>
+            function convert()
+            {
+                event.preventDefault();
+                let amt = document.getElementById("amt");
+                let msg = document.getElementById("msg");
+
+                if(amt.value==="")
+            {
+                alert("u did not enter amt");
+                msg.innerHTML="";
+                amt.focus();
+                return;
+            }
+            let url="https://api.exchangerate-api.com/v4/latest/USD";
+            fetch(url)
+            .then(res=>res.json())
+            .then(data=>{
+                let DOLLAR=data.rates.INR;
+                let aid=parseFloat(amt.value);
+                let air=aid*DOLLAR;
+                let ans="₹" +air.toFixed(2);
+                msg.innerHTML=ans;
+            })
+            .catch(err=>msg.innerHTML="issue" + err);
+
+            }
+        </script>
+    </center>
+    
+</body>
+</html>
